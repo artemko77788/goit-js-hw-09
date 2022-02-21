@@ -16,3 +16,23 @@ img {
   display: block;
   max-width: 100%;
 }
+
+.timer{
+display: flex;
+}
+.field{
+  display: flex;
+  flex-direction: column;
+}
+.field:not(:last-child){
+  margin-right: 12px;
+}
+
+
+.value{
+  margin: auto;
+font-size: 30px;
+margin-top: 10px;
+}
+
+
