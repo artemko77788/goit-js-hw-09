@@ -42,42 +42,86 @@ flatpickr(refs.timeSetInput, {
   defaultDate: new Date(),
   minuteIncrement: 1,
 
+  //   onClose(selectedDates) {
+  //     selectedDates[0].getTime();
+  //     refs.button.disable = true;
+  //     if (selectedDates[0] < new Date()) {
+  //       window.alert('Please choose a date in the future');
+  //     } else {
+  //       refs.button.disabled = false;
+  //       refs.button.addEventListener('click', () => {
+  //         const timer = {
+  //           isActive: false,
+
+  //           start() {
+  //             if (this.isActive) {
+  //               return;
+  //             }
+  //             this.isActive = true;
+
+  //             const timerId = setInterval(() => {
+  //               const todayTime = selectedDates[0].getTime();
+  //               const currentTime = Date.now();
+  //               const countDownDate = todayTime - currentTime;
+
+  //               const { days, hours, minutes, seconds } = convertMs(countDownDate);
+  //               if (countDownDate < 0) {
+  //                 clearInterval(timerId);
+  //               } else {
+  //                 refs.allTime.dataDays.textContent = days;
+  //                 refs.allTime.dataHours.textContent = hours;
+  //                 refs.allTime.dataMinutes.textContent = minutes;
+  //                 refs.allTime.dataSeconds.textContent = seconds;
+  //               }
+  //             }, 1000);
+  //           },
+  //         };
+  //         timer.start();
+  //       });
+  //     }
+  //   },
+  // });
+
   onClose(selectedDates) {
     selectedDates[0].getTime();
-    refs.button.disable = true;
+    refs.button.disabled = true;
     if (selectedDates[0] < new Date()) {
       window.alert('Please choose a date in the future');
-    } else {
-      refs.button.disabled = false;
-      refs.button.addEventListener('click', () => {
-        const timer = {
-          isActive: false,
+      return;
+    }
+    refs.button.disabled = false;
+    refs.button.addEventListener('click', () => {
+      refs.button.disabled = true;
+      refs.timeSetInput.disabled = true;
 
-          start() {
-            if (this.isActive) {
+      const timer = {
+        isActive: false,
+        start() {
+          if (this.isActive) {
+            return;
+          }
+          this.isActive = true;
+
+          const timerId = setInterval(() => {
+            const todayTime = selectedDates[0].getTime();
+            const currentTime = Date.now();
+            const countDownDate = todayTime - currentTime;
+
+            const { days, hours, minutes, seconds } = convertMs(countDownDate);
+            if (countDownDate < 0) {
+              clearInterval(timerId);
+              refs.button.disabled = false;
+              refs.timeSetInput.disabled = false;
               return;
             }
-            this.isActive = true;
-
-            const timerId = setInterval(() => {
-              const todayTime = selectedDates[0].getTime();
-              const currentTime = Date.now();
-              const countDownDate = todayTime - currentTime;
-
-              const { days, hours, minutes, seconds } = convertMs(countDownDate);
-              if (countDownDate < 0) {
-                clearInterval(timerId);
-              } else {
-                refs.allTime.dataDays.textContent = days;
-                refs.allTime.dataHours.textContent = hours;
-                refs.allTime.dataMinutes.textContent = minutes;
-                refs.allTime.dataSeconds.textContent = seconds;
-              }
-            }, 1000);
-          },
-        };
-        timer.start();
-      });
-    }
+            refs.allTime.dataDays.textContent = days;
+            refs.allTime.dataHours.textContent = hours;
+            refs.allTime.dataMinutes.textContent = minutes;
+            refs.allTime.dataSeconds.textContent = seconds;
+          }, 1000);
+        },
+      };
+      timer.start();
+    });
   },
 });
